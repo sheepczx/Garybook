@@ -7,5 +7,5 @@ define("DB_PASS", "123456");
 define("DB_NAME", "shareboard");
 
 //define url
-define("ROOT_PATH", "/sites/project/");
-define("ROOT_URL", "/sites/project/");
+define("ROOT_PATH", "/sites/Garybook/");
+define("ROOT_URL", "/sites/Garybook/");

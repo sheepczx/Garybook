@@ -6,22 +6,32 @@ class ShareModel extends model{
 		
 		//delete
 		if(isset($_POST['delete'])){
-			if($_POST['delete']){
+			if(($_POST['delete'])== 'Delete'){
 				$delete_id = $_POST['delete_id'];
 				$this->query('DELETE FROM shares WHERE id = :id');
 				$this->bind(':id', $delete_id);
 				$this->execute();
 				header('location: '.ROOT_URL.'shares');
 			}
+			if(($_POST['delete'])== 'edit'){
+				$this->query('SELECT * FROM shares WHERE id =:id');
+				$this->bind(':id', $_POST['delete_id']);
+				$this->execute();
+				$_SESSION['edit'] = $this->single();
+				$edit=$_SESSION['edit'];
+				//return $edit;
+				header('location: '.ROOT_URL.'shares/add');
+			}
 		}
 		return $rows;
 	}
 	
 	public function add() {
+		
 		//sanitize POST
 		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 		
-		if($post['submit']){
+		if($post['submit']== 'Submit'){
 			if($post['title']==''||$post['body']==''||$post['link']==''){
 				Messages::setMsg('Please fill in all fields', 'error');
 				return;
@@ -40,18 +50,25 @@ class ShareModel extends model{
 				header('location: '.ROOT_URL.'shares');
 			}		
 		}
+		if($post['submit']== 'Update'){
+			if($post['title']==''||$post['body']==''||$post['link']==''){
+				Messages::setMsg('Please fill in all fields', 'error');
+				return;
+			}
+			print_r($post);
+			echo $_SESSION['edit']['id'];
+			// update Mysql
+			$this->query('UPDATE shares SET title=:title, body=:body, link=:link WHERE id = :id');
+			$this->bind(':title', $post['title']);
+			$this->bind(':body', $post['body']);
+			$this->bind(':link', $post['link']);
+			$this->bind(':id', $_SESSION['edit']['id']);
+			$this->execute();
+			unset ($_SESSION['edit']);
+			header('location: '.ROOT_URL.'shares');
+				
+		}
 		return;
 	}
-	public function remove() {
-		if($_POST['delete']){
-			$delete_id = $_POST['delete_id'];
-			echo $delete_id;
-			/*
-			$delete_id = $_POST['delete_id'];
-			$dbh->query('DELETE FROM shares WHERE id = :id');
-			$dbh->bind(':id', $delete_id);
-			$dbh->execute();
-			return;*/
-		}
-	}
+	
 }

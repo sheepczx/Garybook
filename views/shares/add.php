@@ -6,18 +6,26 @@
 		<form method="post" action= "<?php $_SERVER['PHP_SELF']?>">
 			<div class="form-group">
 				<label> Share Title</label>
-				<input type="text" name="title" class="form-control" /> 
+				<input type="text" name="title" class="form-control" value="<?php echo (isset($_SESSION['edit']['title']) ?($_SESSION['edit']['title']): "")?>"/> 
 			</div>
 			<div class="form-group">
 				<label>Body</label>
-				<textarea name="body" class="form-control" ></textarea>
+				<textarea name="body" class="form-control"><?php echo (isset($_SESSION['edit']['body']) ?($_SESSION['edit']['body']): "")?></textarea>
 			</div>
 			<div class="form-group">
 				<label> Link</label>
-				<input type="text" name="link" class="form-control" /> 
+				<input type="text" name="link" class="form-control" value="<?php echo (isset($_SESSION['edit']['link']) ?($_SESSION['edit']['link']): "")?>" /> 
 			</div>
-			<input class="btn btn-primary" name="submit" type="submit" value="submit"/>
-			<a class="btn btn-danger" href="<?php echo ROOT_PATH; ?>shars">Cancel</a>
+			<?php if(!isset($_SESSION['edit'])): ?>
+			<input class="btn btn-primary" name="submit" type="submit" value="Submit"/>
+			<?php else:?>
+			<input class="btn btn-primary" name="submit" type="submit" value="Update"/>
+			<?php endif;?>
+			<a class="btn btn-danger" href="<?php echo ROOT_PATH; ?>shares">Cancel</a>
 		</form>
 	</div>
+	<?php  
+	//print_r ($_SESSION['edit']);
+	//echo $edit;
+	//unset ($_SESSION['edit']);?>
 </div>
